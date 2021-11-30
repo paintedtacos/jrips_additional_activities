@@ -1,0 +1,47 @@
+WHAT: watch_tv, watch_sport_in, watch_a_movie_in
+WHERE: home
+WHEN: 0 - 24
+WHO: Actor = getRelative(); If Actor.livesWithPlayer() && Random(0, 100) < 10
+OTHER: isAtHome() 
+
+    SceneStart()
+    Actor.dress()
+    Actor.show(2)
+    Player(Annoyed):: "I'm trying to watch that."
+    Actor(Sarcastic)::	"I'm trying to watch that."    
+
+    0:: "Play it safe"
+    1:: "Be Sarcastic Back."
+    
+    If 0
+        Player(Sarcastic):: "Atleast show me something good if you are going to be in the way."
+		Actor.strip()
+		Actor(Flirty):: "Is this better?"
+		0:: isModEnabled(vin_Incest) && Actor:incest > 30 && perversion > 30 :: "Much better!"
+		1:: "Not at all, get out of here!."
+		
+		If 0
+                Player(Excited):: "You look very sexy!"
+                Actor(Flirty):: "Do what you want with me!"
+                Actor.strip()
+                Sex(Player, Actor)
+                Actor:incest += Random(5,10)
+                perversion += Random(2,3)
+        Elseif 1 
+				Actor.hide()
+				"<Actor.name> left the room imiedietly."
+		
+    Else
+        Player(Sarcastic):: "You are not made of glass!"
+        If Random(0, 100) > Actor: Intelligence
+            Actor(Sarcastic):: "Your Mama is made from glass!"
+            Actor:rapportwithplayer -= Random(0, 2)
+        Else
+            Actor(Sarcastic):: "Your brain is made from glass!"
+            Actor:rapportwithplayer -= Random(0, 1)
+            mood -= Random(0,5)
+        Endif
+    Endif
+    
+    SceneEnd()
+    timeout(500, show_interfere)

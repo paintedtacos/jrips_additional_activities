@@ -1,0 +1,51 @@
+WHAT: all
+WHERE: work
+WHEN: 14 - 24
+WHO: Actor = getSpecific(Colleague); If Actor:rapportwithplayer > 0 && Random(0, 100) <10; 
+OTHER: none 
+
+    SceneStart()
+    Actor.dressExcept(Outerwear, Top, Bottom, Headwear)
+    "You are walking around the office when suddenly you heard moaning from one of the rooms."
+
+    0:: "Inspect"
+    1:: "Just my imagination from lack of sex."
+    
+    If 0
+        "You find the source of the moaning and see <Actor.name>."
+        Actor.show(1)
+        "<Actor.S> is masturbating in the back room."
+        Filter(Solo)
+        Sex(Actor)
+        Actor:perversion += Random(0,1)
+        
+        0:: "Quietly leave"
+        1:: perversion >60 ::"Film and get some profit"
+        2:: perversion >30 && Actor:rapportwithplayer > 20 :: "Time for the second round"
+        
+        If 0
+            Actor.hide()
+            Player(Confused):: "Nobody expects the spanish inquisition."
+        Elseif 1
+            Random
+                Actor(Happy):: "Yes. Yes. FUCK YES!"
+                Actor(Happy):: "Thats right <player.name>. Harder."
+                Actor(Happy):: "Yes. Yes. OH MY GOD!..."
+            endRandom
+            money += Random(10,1000)
+            Actor:pornfame += Random(1,5)
+            "You film <Actor.name> and send to it to 'porntube.com'."
+            "After this you quietly go back to your office."
+        Else
+            Player(Flirty):: "Do you need some help with this project?"
+            Actor(Flirty):: "Ah <Player.name> I was thinking about you."
+            Sex(Player, Actor)
+            perversion += Random(0,2)
+            Actor:rapportwithplayer += Random(5,10)
+        Endif
+    Else
+        Player():: "Ahh it's just my imagination surely."
+    Endif
+    
+    SceneEnd()
+    timeout(500, watch_masturbation_at_work)

@@ -1,0 +1,162 @@
+WHAT: all, -sleep, -nap
+WHERE: home
+WHEN: 0 - 24
+WHO: Actor = getRelative(); If Actor.livesWithPlayer() && Actor:rapportwithplayer > 20 && Random(0,100) < 10; Actor2 = getRelative(); Actor3 = getRelative()
+OTHER: isAtHome() 
+
+SceneStart()
+    "The are some loud noises from Your <Actor.relationship>'s room. <Actor.PP> yelling is coming through the walls."
+    Actor(Angry):: "Die you stupid son of a bitch! Die die DIE!"
+    0:: "Tell <Actor.name> to be quiet"
+    1:: "Cut power in house to pacify <Actor.name>"
+    2:: "Join <Actor.relationship>"
+    
+    If 0
+        Player(Upset):: "<Actor.name> can You be quiet. I can't understand why you suck in this game."
+        Actor.dress()
+        Actor.show(1)
+        Actor():: "Kill this boss for me then."
+        0:: "Try to kill boss for them."
+        1:: "It's <Actor.name>'s game they can do it."
+        
+        If 0
+            "You go to the <Actor.relationship>'s room."
+            If intelligence > Random(50,100) && fitness > Random(20,100) && Random(0,100) > 30
+                "After learning the controls you beat the boss with ease."
+                Player(Happy):: "In your face motherfucker!"
+                mood += Random(5,15)
+                Player():: "What's next?"
+                0:: isModEnabled(vin_Incest) && Actor:incest > 30 && perversion > 30 :: "Maybe there is another game for two players?"
+                1:: "Lets end it here and give <Actor.name> the control back."
+                
+                If 0
+                    Player(Excied):: "Maybe there is other game in which You can actually win."
+                    Sex(Player , Actor)
+                    Actor:incest += Random(2,3)
+                    incest += Random(2,3)
+                    Actor.hide()
+                Elseif 1
+                    "You go back to your room."
+                    Actor.hide()
+                Endif
+            Else
+                "This boss is one big pain in the ass. After a hard battle you still loose"
+                Player(Drained):: "It's harder than I thought..."
+                Player(Drained):: "Next time I'll definitaly kill this boss."
+                Actor:rapportwithplayer += Random(0,1)
+                Actor():: "Maybe <Actor2.name> can beat the boss?"
+                Actor.hide()
+            Endif
+        Elseif 1
+            Player(Sarcastic):: "It's your game. I can't steal the joy of beating the boss from You."
+            Actor.hide() 
+            Actor():: "You can't even beat Tetris."
+            Actor:rapportwithplayer -= Random(0,2)
+        Endif
+    Elseif 1
+        If intelligence < 10 
+            Player(Confused):: "Should I cut the blue wire or brown one?"
+            Player(Confused):: "What the hell?"
+            Player.hide()
+            followup(death)
+        Else
+            "All the lights goes out for a moment. After this You can hear through <Actor.name>'s door."
+            Actor(Furious):: "FUUUUUUCK! I was so close."
+            "You quickly get back to your room and pretend to be suprised that the electricty went out."
+        Endif
+    Else 
+        "You go to the <Actor.relationship>'s room."
+        Actor.dress()
+        Actor.show(3)
+        Player(Excited):: "Come get some!"
+        If intelligence > Random(50,100) && fitness > Random(20,100) && Random(0,100) > 30
+            "You quickly kill this boss using the good old button mashing technique."
+            "You pass the controller back to <Actor.name>"
+            Player(Bored):: "Next!"
+            Actor():: "I wish I have this skills."
+			Player(Bored):: "Just takes practice."
+            Actor:rapportwithplayer += Random(0,2)
+        Else
+           "This boss is one big pain in the ass."
+		   "After a hard battle you won! but the boss has morphed into a more dangerous version."
+           Player(Tired):: "Are you kidding me?!"
+        Endif
+        "Both of You have had enough of this game and change it to a Fighter."
+        Actor2.dress()
+        Actor2.show(1)
+        Actor2(Excited):: "May I join?"
+        Actor3.dress()
+        Actor3.show(2)
+        Actor3():: "I am actually pretty good at Fighter games. I can give you some lessons."
+        0:: "I'm good"
+        1:: "Have 1 vs 1 battle"  
+        2:: "Play the tournament"
+        
+        If 0
+            "You leave <Actor.name>'s room."
+            Player():: "Have fun, without me."
+            Actor.hide()
+            Actor2.hide()
+            Actor3.hide()
+        Elseif 1
+            Player():: "Ok this is one on one battle."
+            Actor2(Sarcastic):: "Socialize more they said."
+            Actor2.hide()
+            Actor3(Irritated):: "Chicken!"
+            Actor3.hide()
+            "Both the <Actor2.relationship> and <Actor3.relationship> left this room. After that You and <Actor.name> can Fight."
+            If intelligence - Actor:intelligence > Random(0,100) && fitness - Actor:fitness > Random(0,100)
+                "After first two fights it was clear that your fighting level is much higher than <Actor.name>'s."
+                Player():: "I'll beat you using one hand."
+                0:: isModEnabled(vin_Incest) && Actor:incest > 30 && perversion > 30:: "Maybe there is another game for two players?"
+                1:: "I'm done."
+                
+                If 0
+                    Player(Excied):: "Maybe there is another game in which you can win."
+                    Sex(Player, Actor)
+                    Actor:incest += Random(2,3)
+                    perversion += Random(2,3)
+                Elseif 1 
+                    "Both of you go to your rooms"
+                Endif
+            Else
+                 "You have some equal fighting skills. After some time both of you get bored."
+                 Player():: "Thanks for playing."
+                 Actor():: "You too."
+                 energy -= Random(3,10)
+                 mood += Random(3,10)
+                 Actor.hide()
+            Endif
+        Else
+            "The official <Player.name_last>'s Fighter Tournament has began."
+            "After the hard battles it was the final battle: You vs <Actor3.name>."
+            If intelligence - Actor3:intelligence > Random(0,30) && fitness - Actor3:fitness > Random(0,30)
+                "You won by with a lucky final blow."
+                Actor3(Sad):: "Awww come on, that was a crap win. I demand a replay..."
+                0:: isModEnabled(vin_Incest) && Actor:incest > 30 && perversion > 30 && Actor2:incest > 30 && Actor3:incest > 30 :: "Maybe there is other game for four players?"
+                1:: "I'm bored"
+                
+                If 0
+                    Player(Excied):: "Maybe there is another game in which we all can win."
+                    Sex(Player, Actor3, Actor2, Actor)
+                    Actor:incest += Random(2,3)
+                    Actor2:incest += Random(2,3)
+                    Actor3:incest += Random(2,3)
+                    perversion += Random(2,3)
+                Elseif 1
+                    "All of you get to your rooms."
+                Endif
+            Else 
+                "You lost by a lucky kick."
+                Actor3(Happy):: "Hope you learned your lesson."
+                energy -= Random(2,5)
+                mood += Random(1,2)
+            Endif
+            Actor.hide()
+            Actor2.hide()
+            Actor3.hide() 
+        Endif
+    Endif
+    
+    SceneEnd()
+    timeout(500, videogames_with_family)

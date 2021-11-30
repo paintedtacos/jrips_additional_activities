@@ -1,0 +1,82 @@
+WHAT: all
+WHERE: all
+WHEN: 0 - 24
+WHO: none
+OTHER: Random(1, 100) < pornfame 
+
+    SceneStart()
+    Actor = getRelative()
+    "You get a call from your <Actor.Relationship>."
+    Actor():: "I was just browsing the web and saw interesing ad 'Little <Player.name> get's fucked by Mommy & Daddy'."
+    Actor():: "Do you know anything about it?"
+    0:: "Yes I'm famous porn star"
+    1:: "That just looks like me."
+    2:: "Show me this movie"
+    
+    If 0
+        Player():: "Sorry that you found out this way, i should've told you earlier."
+        Player():: "I was young and I needed money and..."
+        If Actor:incest > Random(30,100)
+            Actor():: "It turned me on so much!"
+            Player():: "I'm shocked..."
+            Actor():: "Be prepared to tell me some more later"
+            "You're <Actor.Relationship> hangup."
+            Actor:incest += Random(5,10)
+            Actor:rapportwithplayer += Random(5,10)
+        Else
+            Actor():: "I'm in deep shock that you went so low..."
+            Player():: "Whats done is done. I can't turn back time."
+            Actor():: "Did you think about your family? how they will feel when they discover a 'star' in the familly?"
+            "Your <Actor.Relationship> hangup."
+            Actor:rapportwithplayer -=Random(2,5)
+        Endif
+    Elseif 1
+        Player():: "That is just a coincedence, it's somebody that looks similar to me."
+        If Actor:intelligence > interpersonal
+            Actor():: "I don't buy it."
+			Actor():: "It has to be you."
+            If Actor:incest > Random(30,100)
+                Actor():: "I didn't say that it's wrong. You should've told me earlier though, before I watched it."
+                Actor():: "Now I can't unseen it and I can't unfeel how I felt."
+				"Your <Actor.Relationship> hangup."
+                Actor:incest += Random(5,15)
+                Actor:perversion += Random(5,15)
+            Else
+                Actor():: "I hope that's the only movie in your 'career'."
+                Actor():: "I must live with this information now. Thanks so much for not warning me."
+				"Your <Actor.Relationship> hangup."
+                Actor:incest -=Random(2,5)
+                Actor:rapportwithplayer -=Random(5,10)
+            Endif
+        Else
+            Actor():: "Maybe you're right. It's terribly poor quality."
+            Player():: "See just like I told you."
+			Actor():: "Ok I'm sorry for accusing you of being in porn."
+			"Your <Actor.Relationship> hangup."
+			Actor:rapportwithplayer +=Random(5,10)
+        Endif
+    Else
+        Player():: "You must show me this movie."
+        Actor():: "Just search your name on incestfamily.xxx for it."
+        "You open the movie."
+        Actor2 = generatePersonTemporary()
+		Actor3 = generatePersonTemporary()
+        blockPregnancy()
+        SexNoAffair(Player, Actor2, Actor3)
+        Actor:perversion += Random(2,5)
+        Player():: "Where am I in it? It's just my name in the title of the film, that means nothing. Do you know how many people have the same name?"
+        Actor():: "Maybe you have right."
+        If Actor:incest > Random(20,100)
+            Actor():: "I just kinda hoped it was you."
+			"Your <Actor.Relationship> hangup."
+            Actor:incest += Random(5,10)
+            Actor:rapportwithplayer += Random(5,10)
+        Else
+            Actor():: "Maybe you are right. No harm in sharing it then."
+			"Your <Actor.Relationship> hangup."
+            pornfame += Random(5,15)
+        Endif
+    Endif
+    
+    SceneEnd()
+    timeout(150, porn_fame_incest)

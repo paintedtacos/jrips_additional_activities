@@ -1,0 +1,58 @@
+WHAT: all
+WHERE: work
+WHEN: 0 - 24
+WHO: Actor = getSpecific(Colleague); If Actor:rapportwithplayer > 0 && Random(0, 100) <10; Actor2 = getSpecific(Colleague)
+OTHER: none 
+
+    SceneStart()
+    Actor.dress()
+    Actor.show(2)
+    Actor():: "Hey I'm going to get a coffee are you coming?"  
+
+    0:: "Work"
+    1:: "Go get a coffee with <Actor.name>"
+    
+    If 0
+        Player():: "Thanks <Actor.name>, but I have too much work to do."
+        Actor():: "Ok maybe another time."
+        Actor.hide()
+
+    Else
+        Player():: "Sure I could use another coffee."
+        Actor.hide()
+        Actor.show(3)
+        "Both of You head to the kitchen to make coffee."
+        If Random(0, 100) < 20
+            "In the kitchen you find <Actor2.name> who struggle with the coffee machine."
+            Actor2.dress()
+            Actor2.show(1)
+            Actor2(Angry):: "You stupid machine. Your mama is a microwave."
+            "Suddenly the coffee machine starts working and shoots coffee all over <Actor2.name>"
+            Actor2(Furious)::"Fucking hell, I'm done. Now even my clothes are a mess!"
+            Actor2.stripOne(Outerwear)
+            Perversion += Random(0, 1)
+        Elseif Random(0, 100) < 20
+            "In the kitchen you find <Actor2.name> who just made a cappucino."
+            Actor2.dress()
+            Actor2.show(1)
+            Actor():: "Watchout for the coffe machine. It's acting strange today."
+            "When You try to get some coffee, suddenly the coffee machine starts workingand sprays you with coffee."
+            Player(Furious)::"Bloody hell. I'm done. I just wanted a coffee and now my clothes are a mess!"
+            Player.stripOne(Outerwear)
+            Perversion += Random(1, 2)
+        Else
+            "In the kitchen you find <Actor2.name> who just made a espresso."
+            Actor2.dress()
+            Actor2.show(1)
+            Actor():: "Watchout for the coffee machine, It's acting strange today."
+            "All three of You get a coffee and chat a little before heading back to work."
+        Endif
+        "After a coffee break You return to your work."
+        Actor.hide()
+        Actor2.hide()
+        Actor:rapportwithplayer += Random(0, 1)
+        Actor2:rapportwithplayer += Random(0, 1)
+    Endif
+    
+    SceneEnd()
+    timeout(500, coffee_at_work)
